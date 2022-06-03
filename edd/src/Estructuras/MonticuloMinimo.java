@@ -301,6 +301,70 @@ public class MonticuloMinimo<T extends ComparableIndexable<T>> implements Collec
     }
 
     /**
+     * Metodo que nos dice si el parametro es un monticulo minimo.
+     * @param X
+     * @return true si el arreglo en el parámetro es un montículo mínimo.
+     */
+    public static boolean esMontMin(int[] X){
+        if (X.length <= 1) {
+            
+            return true;
+        }
+        for (int i = 0; i <= (X.length - 2) / 2; i++){
+
+            if (X[i] > X[2*i + 1] || (2*i + 2 != X.length && X[i] > X[2*i + 2])) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public void heapAux(int a[], int n, int sz){
+        int men = n; 
+        int derecho = 2 * n + 2;
+        int izquierdo = 2 * n + 1;
+ 
+        //Caso en el que el hijo derecho será menor que el padre
+        if (sz > derecho && a[men] > a[derecho])
+            men = derecho;
+        
+        //Caso en el que el hijo izquierdo será menor que el padre
+        if (sz > izquierdo && a[n] > a[izquierdo])
+            men = izquierdo;
+ 
+        // Caso en el que el menor resulta ser diferente al padre
+        if (men != n) {
+            swapB(a, n, men);
+            heapAux(a, men, sz);
+        }
+    }
+
+    public void swapB (int N[] , int i, int j){
+
+        int temp = N[i];
+        N[i] = N[j];
+        N[j] = temp;
+    }
+
+    
+    public void heapSort(int a[], int x){
+        // Va a construir el heap
+        for (int i = x / 2 - 1; i >= 0; i--)
+            heapAux(a, x, i);
+ 
+        for (int i = x - 1; i >= 0; i--) {            
+            // Se moverá la raiz actual hacia el final 
+            int temp = a[0];
+            a[0] = a[i];
+            a[i] = temp;
+            heapAux(a, x, 0);
+        }
+    }
+
+    /**
     * Ordena la colección usando HeapSort.
     * @param <T> tipo del que puede ser el arreglo.
     * @param coleccion la colección a ordenar.
@@ -315,5 +379,16 @@ public class MonticuloMinimo<T extends ComparableIndexable<T>> implements Collec
     
     }
 
+     /**
+     * Método que convierte un arreglo que representa un montículo máximo a uno minimo en O(n)
+     */
+    public void MontMax_MontMin(int[] X){
+        int i = (X.length - 2) / 2;
 
+         while (i >= 0) {
+        
+            heapAux(X, i--, X.length);
+        }
+    }
+    
 }
